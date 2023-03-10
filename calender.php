@@ -74,10 +74,11 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-calender.php';
  * @since    1.0.0
  */
 
- require plugin_dir_path(__FILE__) . 'scripts.php';
+require plugin_dir_path(__FILE__) . 'scripts.php';
 
-
- function cc_create_table()
+//Create Database
+// Create a new database table
+function cc_create_table()
 {
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'cc_data';
@@ -179,22 +180,22 @@ function schedule_content_callback()
 {
 ?>
 
+	<h1 class="cc-title">Schedule Content</h1>
 	<!--Add Input fields on Schedule Content Page-->
 	<div class="wrap">
-	<h1>Schedule Content</h1>
 
 
 		<form method="post">
 			<input type="hidden" name="action" value="cc_form">
 
 			<label for="date">Date:</label>
-			<input type="date" name="date" id="date" value="<?php echo esc_attr(get_option('date')); ?>" /><br />
+			<input type="date" name="date" id="date" value="<?php echo esc_attr(get_option('date')); ?>" required /><br />
 
 			<label for="occasion">Occasion:</label>
-			<input type="text" name="occasion" id="occasion" value="<?php echo esc_attr(get_option('occasion')); ?>" /><br />
+			<input type="text" name="occasion" id="occasion" value="<?php echo esc_attr(get_option('occasion')); ?>" required /><br />
 
 			<label for="post_title">Post Title:</label>
-			<input type="text" name="post_title" id="post_title" value="<?php echo esc_attr(get_option('post_title')); ?>" /><br />
+			<input type="text" name="post_title" id="post_title" value="<?php echo esc_attr(get_option('post_title')); ?>" required /><br />
 
 			<label for="author">Author:</label>
 			<select name="author" id="author" required>
@@ -234,17 +235,17 @@ function schedule_content_callback()
 function view_schedule_callback()
 {
 ?>
-	<h1>Scheduled Contents</h1>
+	<h1 class="cc-title">Upcoming Scheduled Content</h1>
 
-<?php
+	<?php
 
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'cc_data';
 
-	$data = $wpdb->get_results("SELECT * FROM $table_name");
+	$data = $wpdb->get_results("SELECT * FROM $table_name WHERE date >= DATE(NOW()) ORDER BY date");
 
-	echo '<table>';
-	echo '<tr><th>ID</th><th>Date</th><th>Occasion</th><th>Post Title</th><th>Author</th><th>Reviewer</th></tr>';
+	echo '<table id="cc-table">';
+	echo '<thead><tr><th>ID</th><th>Date</th><th>Occasion</th><th>Post Title</th><th>Author</th><th>Reviewer</th></tr></thead>';
 	foreach ($data as $row) {
 		echo '<tr>';
 		echo '<td>' . $row->id . '</td>';
@@ -252,12 +253,10 @@ function view_schedule_callback()
 		echo '<td>' . $row->occasion . '</td>';
 		echo '<td>' . $row->post_title . '</td>';
 		echo '<td>' . get_userdata($row->author)->user_login . '</td>';
-		echo '<td>' . $row->reviewer . '</td>';
+		echo '<td>' . get_userdata($row->reviewer)->user_login . '</td>';
 		echo '</tr>';
 	}
-	echo '</table>';
 }
-
 
 
 function run_calender() {

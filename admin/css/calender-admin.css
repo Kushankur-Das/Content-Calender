@@ -2,48 +2,55 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
-body {
+ /*Heading*/
+
+ .cc-title {
+  font-size: 25px;
+  font-weight: bold;
+  text-align: center;
+  padding-top: 40px;
+ }
+
+ body {
   background-color: whitesmoke;
   box-sizing: border-box;
-}
+ }
 
-.wrap {
+ .wrap {
   margin: auto;
-}
+ }
 
-form {
+ form {
   display: inline-flex;
   flex-flow: row wrap;
   align-items: center;
-}
+ }
 
-label,
-input,
-select {
+
+ label, input, select {
   margin: 2px 2px;
   padding: 2px;
-}
+ }
 
-label {
+ label {
   display: inline-block;
   font-family: Helvetica, sans-serif;
   font-weight: 600;
   text-align: right;
-}
+ }
 
-input,
-select {
+ input, select {
   width: 200px;
   box-sizing: border-box;
   margin-right: 10px;
-}
+ }
 
-#submit {
+ #submit {
   margin: -10px 5px 0 5px;
   width: 100%;
-}
+ }
 
-@media (max-width: 800px) {
+ @media screen and (max-width: 800px) {
   form {
     flex-direction: column;
     align-items: stretch;
@@ -53,12 +60,76 @@ select {
     width: 70%;
   }
 
-  label,
-  input,
-  select {
+  label, input, select {
     width: 100%;
-  }
+   }
   label {
     text-align: left;
+  }
+}
+
+ /*Table CSS*/
+ #cc-table {
+  border-collapse: collapse;
+  text-align: center;
+  width: 95%;
+ }
+
+ #cc-table th{
+  background-color: #222222;
+  color: white;
+ }
+
+ #cc-table th,#cc-table td {
+  padding: 8px;
+  font-size: 18px;
+ }
+
+ #cc-table tr {
+  border-bottom: 1px solid #222;
+ }
+
+ @media screen and (max-width: 600px){
+  #cc-table thead{
+    display: none;
+  }
+
+  #cc-table td{
+    display: block;
+  }
+
+  #cc-table td:first-child{
+    background-color: #222;
+    color: #fff;
+    text-align: center;
+  }
+  
+  #cc-table td:nth-child(2)::before{
+    content: "Date";
+  }
+
+  #cc-table td:nth-child(3)::before{
+    content: "Occasion";
+  }
+
+  #cc-table td:nth-child(4)::before{
+    content: "Post Title";
+  }
+
+  #cc-table td:nth-child(5)::before{
+    content: "Author";
+  }
+  #cc-table td:nth-child(6)::before{
+    content: "Reviewer";
+  }
+
+  #cc-table td{
+    text-align: right;
+  }
+
+  #cc-table td::before{
+    float: left;
+    margin-right: 10px;
+    font-weight: bold;
   }
 }
