@@ -2,10 +2,11 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+
  /*Heading*/
 
  .cc-title {
-  font-size: 25px;
+  font-size: 20px;
   font-weight: bold;
   text-align: center;
   padding-top: 40px;
@@ -14,10 +15,6 @@
  body {
   background-color: whitesmoke;
   box-sizing: border-box;
- }
-
- .wrap {
-  margin: auto;
  }
 
  form {
