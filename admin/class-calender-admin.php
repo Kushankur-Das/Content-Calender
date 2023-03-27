@@ -129,18 +129,42 @@ class Calender_Admin
 		);
 	}
 
+	// Handle the form submission
+	public function cc_handle_form()
+	{
+		global $wpdb;
+
+		if (isset($_POST['date']) && isset($_POST['occasion']) && isset($_POST['post_title']) && isset($_POST['author']) && isset($_POST['reviewer'])) {
+			$table_name = $wpdb->prefix . 'cc_data';
+			$date = sanitize_text_field($_POST['date']);
+			$occasion = sanitize_text_field($_POST['occasion']);
+			$post_title = sanitize_text_field($_POST['post_title']);
+			$author = sanitize_text_field($_POST['author']);
+			$reviewer = sanitize_text_field($_POST['reviewer']);
+			$wpdb->insert(
+				$table_name,
+				array(
+					'date' => $date,
+					'occasion' => $occasion,
+					'post_title' => $post_title,
+					'author' => $author,
+					'reviewer' => $reviewer
+				)
+			);
+		}
+	}
 
 	function my_form_submission_handler()
 	{
 		if (isset($_POST['submit'])) {
-			cc_handle_form();
+			$this->cc_handle_form();
 		}
 	}
 
 
 	public function schedule_content_callback()
 	{
-	?>
+?>
 
 		<h1 class="cc-title">Schedule Content</h1>
 		<!--Add Input fields on Schedule Content Page-->
@@ -225,35 +249,35 @@ class Calender_Admin
 			?>
 			<h1 class="cc-title">Deadline Closed Content</h1>
 
-	<?php
+			<?php
 
-		global $wpdb;
-		$table_name = $wpdb->prefix . 'cc_data';
+			global $wpdb;
+			$table_name = $wpdb->prefix . 'cc_data';
 
-		$data = $wpdb->get_results("SELECT * FROM $table_name WHERE date < DATE(NOW()) ORDER BY date DESC");
+			$data = $wpdb->get_results("SELECT * FROM $table_name WHERE date < DATE(NOW()) ORDER BY date DESC");
 
-		echo '<table class="wp-list-table widefat fixed striped table-view-list">';
-		echo '<thead><tr><th>ID</th><th>Date</th><th>Occasion</th><th>Post Title</th><th>Author</th><th>Reviewer</th></tr></thead>';
-		foreach ($data as $row) {
-			echo '<tr>';
-			echo '<td>' . $row->id . '</td>';
-			echo '<td>' . $row->date . '</td>';
-			echo '<td>' . $row->occasion . '</td>';
-			echo '<td>' . $row->post_title . '</td>';
-			echo '<td>' . get_userdata($row->author)->user_login . '</td>';
-			echo '<td>' . get_userdata($row->reviewer)->user_login . '</td>';
-			echo '</tr>';
+			echo '<table class="wp-list-table widefat fixed striped table-view-list">';
+			echo '<thead><tr><th>ID</th><th>Date</th><th>Occasion</th><th>Post Title</th><th>Author</th><th>Reviewer</th></tr></thead>';
+			foreach ($data as $row) {
+				echo '<tr>';
+				echo '<td>' . $row->id . '</td>';
+				echo '<td>' . $row->date . '</td>';
+				echo '<td>' . $row->occasion . '</td>';
+				echo '<td>' . $row->post_title . '</td>';
+				echo '<td>' . get_userdata($row->author)->user_login . '</td>';
+				echo '<td>' . get_userdata($row->reviewer)->user_login . '</td>';
+				echo '</tr>';
+			}
+			echo '</table>';
+			echo '</div>';
 		}
-		echo '</table>';
-		echo '</div>';
-	}
 
-	public function content_calendar_callback()
-	{
-?>
-		<h1><?php esc_html_e(get_admin_page_title()); ?></h1>
+		public function content_calendar_callback()
+		{
+			?>
+			<h1><?php esc_html_e(get_admin_page_title()); ?></h1>
 	<?php
-		$this->schedule_content_callback();
-		$this->view_schedule_callback();
+			$this->schedule_content_callback();
+			$this->view_schedule_callback();
+		}
 	}
-}

@@ -100,39 +100,9 @@ function cc_create_table()
 
 register_activation_hook(__FILE__, 'cc_create_table');
 
-// Handle the form submission
-function cc_handle_form()
-{
-	global $wpdb;
-
-	if (isset($_POST['date']) && isset($_POST['occasion']) && isset($_POST['post_title']) && isset($_POST['author']) && isset($_POST['reviewer'])) {
-		$table_name = $wpdb->prefix . 'cc_data';
-		$date = sanitize_text_field($_POST['date']);
-		$occasion = sanitize_text_field($_POST['occasion']);
-		$post_title = sanitize_text_field($_POST['post_title']);
-		$author = sanitize_text_field($_POST['author']);
-		$reviewer = sanitize_text_field($_POST['reviewer']);
-		$wpdb->insert(
-			$table_name,
-			array(
-				'date' => $date,
-				'occasion' => $occasion,
-				'post_title' => $post_title,
-				'author' => $author,
-				'reviewer' => $reviewer
-			)
-		);
-	}
-}
 
 add_action('init', 'my_form_submission_handler');
 
-function my_form_submission_handler()
-{
-	if (isset($_POST['submit'])) {
-		cc_handle_form();
-	}
-}
 
 
 function run_calender() {
