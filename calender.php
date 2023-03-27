@@ -101,10 +101,6 @@ function cc_create_table()
 register_activation_hook(__FILE__, 'cc_create_table');
 
 
-add_action('init', 'my_form_submission_handler');
-
-
-
 function run_calender() {
 
 	$plugin = new Calender();

@@ -100,6 +100,7 @@ class Calender_Admin
 
 		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/calender-admin.js', array('jquery'), $this->version, false);
 	}
+	//Add Custom Menu Page
 	function cc_add_menu_pages()
 	{
 		add_menu_page(
@@ -128,7 +129,6 @@ class Calender_Admin
 			array($this, 'view_schedule_callback')
 		);
 	}
-
 	// Handle the form submission
 	public function cc_handle_form()
 	{

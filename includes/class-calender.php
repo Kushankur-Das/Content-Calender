@@ -158,7 +158,6 @@ class Calender {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action('admin_menu', $plugin_admin, 'cc_add_menu_pages');
 		$this->loader->add_action('init', $plugin_admin, 'my_form_submission_handler');
-
 	}
 
 	/**
