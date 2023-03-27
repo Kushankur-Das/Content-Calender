@@ -134,36 +134,6 @@ function my_form_submission_handler()
 	}
 }
 
-//Add Custom Menu Page
-function cc_add_menu_pages()
-{
-	add_menu_page(
-		__('Content Calendar', 'content-calendar'),
-		'Content Calendar',
-		'manage_options',
-		'content-calendar',
-		'content_calendar_callback',
-		'dashicons-calendar-alt',
-		6
-	);
-	add_submenu_page(
-		'content-calendar',
-		__('Schedule Content', 'content-calendar'),
-		__('Schedule Content', 'content-calendar'),
-		'manage_options',
-		'schedule-content',
-		'schedule_content_callback'
-	);
-	add_submenu_page(
-		'content-calendar',
-		__('View Schedule', 'content-calendar'),
-		__('View Schedule', 'content-calendar'),
-		'manage_options',
-		'view-schedule',
-		'view_schedule_callback'
-	);
-}
-add_action('admin_menu', 'cc_add_menu_pages');
 
 function content_calendar_callback()
 {
@@ -235,6 +205,7 @@ function schedule_content_callback()
 function view_schedule_callback()
 {
 ?>
+	<div class="wrap">
 	<h1 class="cc-title">Upcoming Scheduled Content</h1>
 
 	<?php
@@ -244,7 +215,7 @@ function view_schedule_callback()
 
 	$data = $wpdb->get_results("SELECT * FROM $table_name WHERE date >= DATE(NOW()) ORDER BY date");
 
-	echo '<table id="cc-table">';
+	echo '<table class="wp-list-table widefat fixed striped table-view-list">';
 	echo '<thead><tr><th>ID</th><th>Date</th><th>Occasion</th><th>Post Title</th><th>Author</th><th>Reviewer</th></tr></thead>';
 	foreach ($data as $row) {
 		echo '<tr>';
@@ -256,6 +227,33 @@ function view_schedule_callback()
 		echo '<td>' . get_userdata($row->reviewer)->user_login . '</td>';
 		echo '</tr>';
 	}
+	echo '</table>';
+
+
+	?>
+	<h1 class="cc-title">Deadline Closed Content</h1>
+
+<?php
+
+	global $wpdb;
+	$table_name = $wpdb->prefix . 'cc_data';
+
+	$data = $wpdb->get_results("SELECT * FROM $table_name WHERE date < DATE(NOW()) ORDER BY date DESC");
+
+	echo '<table class="wp-list-table widefat fixed striped table-view-list">';
+	echo '<thead><tr><th>ID</th><th>Date</th><th>Occasion</th><th>Post Title</th><th>Author</th><th>Reviewer</th></tr></thead>';
+	foreach ($data as $row) {
+		echo '<tr>';
+		echo '<td>' . $row->id . '</td>';
+		echo '<td>' . $row->date . '</td>';
+		echo '<td>' . $row->occasion . '</td>';
+		echo '<td>' . $row->post_title . '</td>';
+		echo '<td>' . get_userdata($row->author)->user_login . '</td>';
+		echo '<td>' . get_userdata($row->reviewer)->user_login . '</td>';
+		echo '</tr>';
+	}
+	echo '</table>';
+	echo '</div>';
 }
 
 

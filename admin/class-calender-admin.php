@@ -20,7 +20,8 @@
  * @subpackage Calender/admin
  * @author     Kushankur Das <kushankur.das@wisdmlabs.com>
  */
-class Calender_Admin {
+class Calender_Admin
+{
 
 	/**
 	 * The ID of this plugin.
@@ -47,11 +48,11 @@ class Calender_Admin {
 	 * @param      string    $plugin_name       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct($plugin_name, $version)
+	{
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-
 	}
 
 	/**
@@ -59,7 +60,8 @@ class Calender_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_styles() {
+	public function enqueue_styles()
+	{
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -73,8 +75,7 @@ class Calender_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/calender-admin.css', array(), $this->version, 'all' );
-
+		wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/calender-admin.css', array(), $this->version, 'all');
 	}
 
 	/**
@@ -82,7 +83,8 @@ class Calender_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_scripts() {
+	public function enqueue_scripts()
+	{
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -96,8 +98,34 @@ class Calender_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/calender-admin.js', array( 'jquery' ), $this->version, false );
-
+		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/calender-admin.js', array('jquery'), $this->version, false);
 	}
-
+	function cc_add_menu_pages()
+	{
+		add_menu_page(
+			__('Content Calendar', 'content-calendar'),
+			'Content Calendar',
+			'manage_options',
+			'content-calendar',
+			'content_calendar_callback',
+			'dashicons-calendar-alt',
+			6
+		);
+		add_submenu_page(
+			'content-calendar',
+			__('Schedule Content', 'content-calendar'),
+			__('Schedule Content', 'content-calendar'),
+			'manage_options',
+			'schedule-content',
+			'schedule_content_callback'
+		);
+		add_submenu_page(
+			'content-calendar',
+			__('View Schedule', 'content-calendar'),
+			__('View Schedule', 'content-calendar'),
+			'manage_options',
+			'view-schedule',
+			'view_schedule_callback'
+		);
+	}
 }
